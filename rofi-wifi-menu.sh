@@ -69,7 +69,7 @@ fi
 
 ## Grab the user's chosen SSID entry.
 CHENTRY=$(echo -e "$MENU" | uniq -u | rofi -dmenu -p "WiFi SSID" -lines "$LINE_COUNT" -a "$HIGHLINE" -location "$POSITION" -yoffset "$Y_OFF" -xoffset "$X_OFF" -font "$FONT" -width -"$R_WIDTH")
-CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $1}')
+CHSSID=$(echo "$CHENTRY" | sed  's/\s\{2,\}/\|/g' | awk -F "|" '{print $2}')
 
 ## Support manual SSID entry.
 if [ "$CHENTRY" = "manually connect to a network" ] ; then
@@ -84,7 +84,8 @@ elif [[ "$CHENTRY" =~ "disconnect from " ]]; then
 
 ## Support connecting to the chosen network.
 elif [ "$CHSSID" != "" ]; then
-	WIFI_PASS=$(echo "Enter the network password." | rofi -dmenu -password -p "Password: " -lines 1 -location "$POSITION" -yoffset "$Y_OFF" -xoffset "$X_OFF" -font "$FONT" -width -"$R_WIDTH")
+#	WIFI_PASS=$(echo "Enter the network password." | rofi -dmenu -password -p "Password: " -lines 1 -location "$POSITION" -yoffset "$Y_OFF" -xoffset "$X_OFF" -font "$FONT" -width -"$R_WIDTH")
 	iwctl station $DEVICE disconnect
-	iwctl --passphrase $WIFI_PASS station $DEVICE connect $CHSSID
+#	iwctl --passphrase $WIFI_PASS station $DEVICE connect $CHSSID
+	iwctl station $DEVICE connect $CHSSID
 fi
